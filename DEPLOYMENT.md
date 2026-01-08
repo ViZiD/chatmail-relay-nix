@@ -121,7 +121,7 @@ The logo is placed in the center of a 384x384px QR code. High error correction (
 
 ```nix
 {
-  inputs.chatmail.url = "github:radik-dev/chatmail";
+  inputs.chatmail.url = "github:ViZiD/chatmail-relay-nix";
 
   outputs = { nixpkgs, chatmail, ... }: {
     nixosConfigurations.server = nixpkgs.lib.nixosSystem {

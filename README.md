@@ -8,7 +8,7 @@ NixOS modules for [chatmail relay](https://github.com/chatmail/relay) - email se
 
 ```nix
 {
-  inputs.chatmail.url = "github:radik-dev/chatmail";
+  inputs.chatmail.url = "github:ViZiD/chatmail-relay-nix";
 
   outputs = { nixpkgs, chatmail, ... }: {
     nixosConfigurations.server = nixpkgs.lib.nixosSystem {

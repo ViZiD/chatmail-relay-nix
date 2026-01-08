@@ -15,7 +15,7 @@ Example NixOS configurations for chatmail deployment.
 
 ```nix
 {
-  inputs.chatmail.url = "github:radik-dev/chatmail";
+  inputs.chatmail.url = "github:ViZiD/chatmail-relay-nix";
 
   outputs = { nixpkgs, chatmail, ... }: {
     nixosConfigurations.server = nixpkgs.lib.nixosSystem {
