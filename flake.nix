@@ -7,43 +7,22 @@
   };
 
   outputs =
-    inputs@{ flake-parts, ... }:
+    inputs@{ flake-parts, self, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [
         "x86_64-linux"
         "aarch64-linux"
       ];
 
-      flake = {
-        nixosModules.default = import ./default.nix;
-        nixosModules.chatmail = import ./default.nix;
+      imports = [ ./flake-module.nix ];
 
-        overlays.default =
-          final: prev:
-          let
-            chatmailPkgs = import ./pkgs { pkgs = final; };
-          in
-          chatmailPkgs
-          // {
-            opendkim = chatmailPkgs.opendkim-lua;
-            dovecot = prev.dovecot.override { withLua = true; };
-          };
-      };
+      flake.flakeModule = ./flake-module.nix;
 
       perSystem =
         { pkgs, lib, ... }:
         let
-          pkgs' = pkgs.extend (
-            final: _prev:
-            import ./pkgs {
-              pkgs = final;
-              inherit lib;
-            }
-          );
-          chatmailPkgs = import ./pkgs {
-            pkgs = pkgs';
-            inherit lib;
-          };
+          pkgs' = pkgs.extend (import ./overlays);
+          chatmailPkgs = import ./pkgs { pkgs = pkgs'; inherit lib; };
         in
         {
           packages = lib.filterAttrs (_: v: lib.isDerivation v) chatmailPkgs;
